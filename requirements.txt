@@ -1,0 +1,2 @@
+StackAPI==0.1.9
+ChatExchange==0.0.4
