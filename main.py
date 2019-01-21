@@ -8,6 +8,8 @@ import getpass
 import chatexchange
 import cbenv
 
+email = cbenv.email
+password = cbenv.password
 client = chatexchange.Client('stackexchange.com', email, password)
 
 me = client.get_me()
@@ -28,7 +30,7 @@ def cbm(cbm):
       sandbox.send_message(cbm)
       t = datetime.now()
 
-cbm('[ CharlieB ] Started')
+cbm('[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] Started')
 
 l = []
 def pullcomments():
@@ -50,13 +52,12 @@ def pullcomments():
         c = c + 1
       else:
         if re.match(regex, str(data['body'])):
-          msg = '[ CharlieB ] [Link](' + data['link'] + ') | Rep: ' + str(data['owner']['reputation']) + ' | Comment: `' + data['body'] + '`'
+          msg = '[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] [Link](' + data['link'] + ') | Rep: ' + str(data['owner']['reputation']) + ' | Comment: `' + data['body'] + '`'
           cbm(msg)
-          print(msg)
           b = b + 1
           l.append(data['comment_id'])
     a = a + 1
-  cbm('Found ' + str(b) + ' new comments & ' + str(c) + ' already caught out of a total of ' + str(a) + ' | Quota left: ' + str(comments['quota_remaining']))
+  print('Found ' + str(b) + ' new comments & ' + str(c) + ' already caught out of a total of ' + str(a) + ' | Quota left: ' + str(comments['quota_remaining']))
   s = datetime.now() - s
   s = s.total_seconds()
   s = 60 - s
