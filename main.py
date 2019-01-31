@@ -4,33 +4,23 @@ import re
 from datetime import timedelta
 from datetime import datetime
 import time
-import getpass
-import chatexchange
+import BotpySE as bp
 import cbenv
 
 email = cbenv.email
 password = cbenv.password
-client = chatexchange.Client('stackexchange.com', email, password)
 
-me = client.get_me()
-sandbox = client.get_room(57773)
-my_message = None
+commands = bp.all_commands
+
+rooms = [57773]
+
+bot = bp.Bot("CharlieB", commands, rooms, [], "stackexchange.com", email, password)
 
 global t
 t = datetime.now()
 
 def cbm(cbm):
-  with sandbox.new_messages() as messages:
-    global t
-    if datetime.now() - t > timedelta(seconds=5):
-      sandbox.send_message(cbm)
-      t = datetime.now()
-    else:
-      time.sleep(5)
-      sandbox.send_message(cbm)
-      t = datetime.now()
-
-cbm('[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] Started')
+  bot.post_global_message('[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] ' + cbm)
 
 l = []
 def pullcomments():
@@ -52,16 +42,18 @@ def pullcomments():
         c = c + 1
       else:
         if re.match(regex, str(data['body'])):
-          msg = '[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] [Link](' + data['link'] + ') | Rep: ' + str(data['owner']['reputation']) + ' | Comment: `' + data['body'] + '`'
+          msg = '[Link](' + data['link'] + ') | Rep: ' + str(data['owner']['reputation']) + ' | Comment: `' + data['body'] + '`'
           cbm(msg)
           b = b + 1
           l.append(data['comment_id'])
     a = a + 1
-  print('Found ' + str(b) + ' new comments & ' + str(c) + ' already caught out of a total of ' + str(a) + ' | Quota left: ' + str(comments['quota_remaining']))
+  cbm(str(datetime.now()) + ' Scanned: ' + str(a) + ' | New Matched: ' + str(b) + ' | Previously seen: ' + str(c) + ' | Quota: ' + str(comments['quota_remaining']))
   s = datetime.now() - s
   s = s.total_seconds()
   s = 60 - s
   time.sleep(s)
+
+bot.start()
 
 while True:
   pullcomments()
