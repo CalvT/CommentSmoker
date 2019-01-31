@@ -1,2 +1,3 @@
 StackAPI==0.1.9
 ChatExchange==0.0.4
+BotpySE==0.7.3
