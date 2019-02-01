@@ -10,7 +10,7 @@ password = cbenv.password
 
 commands = bp.all_commands
 
-bot = bp.Bot("CharlieB", commands, 57773, [], "stackexchange.com", email, password)
+bot = bp.Bot("CharlieB", commands, [57773], [], "stackexchange.com", email, password)
 
 def cbm(msg):
     bot.post_global_message('[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] ' + msg)
