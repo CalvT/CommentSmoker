@@ -29,7 +29,7 @@ def pullcomments():
                 c = c + 1
             else:
                 if re.match(regex, str(data['body'])):
-                    cbm('[Link]({}) | Rep: {} | Comment: `{}`'.format(data['link'], str(data['owner']['reputation'], data['body'])))
+                    cbm('URL Detected | [Comment]({}): `{}`'.format(data['link'], data['body'])))
                     b = b + 1
                     l.append(data['comment_id'])
         a = a + 1
