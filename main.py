@@ -1,5 +1,4 @@
-from stackapi import StackAPI
-import json
+import requests
 import re
 from datetime import timedelta
 from datetime import datetime
@@ -25,12 +24,8 @@ def cbm(cbm):
 l = []
 def pullcomments():
   s = datetime.now()
-  site = StackAPI('stackoverflow')
-  site.key='IAkbitmze4B8KpacUfLqkw(('
-  site.max_pages=1
-  site.page_size=75
   regex = r'.*<a href=\"http(|s):\/\/(?!(meta\.|(meta\.|)[a-z]*\.|)(stackoverflow|stackexchange))'
-  comments = site.fetch('comments', sort='creation', filter='!SWK9z*gpvuT.wQS8A.')
+  comments = requests.get('http://api.stackexchange.com/2.2/comments?page=1&pagesize=75&key=IAkbitmze4B8KpacUfLqkw((&order=desc&sort=creation&site=stackoverflow&filter=!SWK9z*gpvuT.wQS8A.').json() 
   items = comments['items']
   a = 0
   b = 0
