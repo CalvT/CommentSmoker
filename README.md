@@ -1,6 +1,7 @@
 # CommentSmoker
 
 [![Open issues](https://img.shields.io/github/issues/CalvT/CommentSmoker.svg)](https://github.com/CalvT/CommentSmoker/issues)
+[![Maintainability](https://api.codeclimate.com/v1/badges/1245ffaf5292557573e9/maintainability)](https://codeclimate.com/github/CalvT/CommentSmoker/maintainability)
 
 CommentSmoker is a Bot designed in Python to scan comments on Stack Overflow. It accesses these via the [Stack Exchange API](https://api.stackexchange.com), and then posts them to chat using [Botpy](https://github.com/SOBotics/Botpy).
 
@@ -10,5 +11,8 @@ This is a project for me to learn Python, so the coding quality is sub-par at be
 
 ### TODO
  - Add blacklist capabilities
+ - Add whitelist capabilities
+ - Add commands & privileges
+ - Add message queue
  - Add Charcoal lists
  - Expand to other sites
