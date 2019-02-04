@@ -36,7 +36,7 @@ bot = bp.Bot('CharlieB', commands, [57773], [], 'stackexchange.com', email, pass
 def cbm(msg):
     bot.post_global_message('[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] ' + msg)
 
-l = []
+l = set()
 def pullcomments():
     s = datetime.now()
     comments = requests.get('http://api.stackexchange.com/2.2/comments?page=1&pagesize=75&key=IAkbitmze4B8KpacUfLqkw((&order=desc&sort=creation&site=stackoverflow&filter=!SWK9z*gpvuT.wQS8A.').json() 
@@ -51,13 +51,13 @@ def pullcomments():
                 if re.match(websiteRegex, data['body']):
                     cbm('Website Detected | [Comment]({}): `{}`'.format(data['link'], data['body']))
                     b = b + 1
-                    l.append(data['comment_id'])
+                    l.add(data['comment_id'])
                 elif re.match(keywordRegex, data['body']):
                     cbm('Keyword Detected | [Comment]({}): `{}`'.format(data['link'], data['body']))
                     b = b + 1
-                    l.append(data['comment_id'])
+                    l.add(data['comment_id'])
         a = a + 1
-    cbm('{} Scanned: {} | New Matched: {} | Previously seen: {} | Quota: {}'.format(datetime.now(), a, b, c, comments['quota_remaining']))
+    print('{} Scanned: {} | New Matched: {} | Previously seen: {} | Quota: {}'.format(datetime.now(), a, b, c, comments['quota_remaining']))
     s = datetime.now() - s
     s = s.total_seconds()
     s = 60 - s
