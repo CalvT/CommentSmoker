@@ -1,4 +1,4 @@
-([a-z]*\.)(meta\.|)(stackoverflow|stackexchange)
+([a-z]*\.|)(meta\.|)(stackoverflow|stackexchange)
 i\.stack\.imgur\.com
 developer\.mozilla\.org
 docs\.microsoft\.com
