@@ -1,0 +1,8 @@
+([a-z]*\.)(meta\.|)(stackoverflow|stackexchange)
+i\.stack\.imgur\.com
+developer\.mozilla\.org
+docs\.microsoft\.com
+docs\.python\.org
+issues\.apache\.org
+jsfiddle\.net
+php\.net
