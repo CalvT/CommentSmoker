@@ -11,7 +11,7 @@ password = cbenv.password
 commands = bp.all_commands
 
 websiteWhitelist = [
-    '([a-z]*\.)(meta\.)(stackoverflow|stackexchange)',
+    '([a-z]*\.)(meta\.|)(stackoverflow|stackexchange)',
     'i\.stack\.imgur\.com',
     'developer\.mozilla\.org',
     'docs\.microsoft\.com',
@@ -27,7 +27,7 @@ keywordBlacklist = [
     'downvote'
 ]
 
-websiteRegex = '.*<a href=\"http(s):\/\/(www\.)(?!' + '|'.join(websiteWhitelist) + ')'
+websiteRegex = '.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(websiteWhitelist) + '))'
 
 keywordRegex = '(' + ')|('.join(keywordBlacklist) + ')'
 
