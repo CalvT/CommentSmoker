@@ -23,6 +23,19 @@ bot = bp.Bot('CharlieB', commands, [57773], [], 'stackexchange.com', email, pass
 def cbm(msg):
     bot.post_global_message('[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] ' + msg)
 
+def scanner(scan):
+    if re.match(websiteRegex, scan):
+        return 1
+    elif re.match(keywordRegex, scan):
+        return 2
+    else:
+        return 0
+    
+messages = {
+    1:'Website Detected | [Comment]({}): `{}`',
+    2:'Keyword Detected | [Comment]({}): `{}`'
+}
+
 l = set()
 def pullcomments():
     s = datetime.now()
@@ -35,14 +48,11 @@ def pullcomments():
             if data['comment_id'] in l:
                 c = c + 1
             else:
-                if re.match(websiteRegex, data['body']):
-                    cbm('Website Detected | [Comment]({}): `{}`'.format(data['link'], data['body']))
+                x = scanner(data['body'])
+                l.add(data['comment_id'])
+                if x > 0:
+                    cbm(messages.get(x).format(data['link'], data['body'])
                     b = b + 1
-                    l.add(data['comment_id'])
-                elif re.match(keywordRegex, data['body']):
-                    cbm('Keyword Detected | [Comment]({}): `{}`'.format(data['link'], data['body']))
-                    b = b + 1
-                    l.add(data['comment_id'])
         a = a + 1
     print('{} Scanned: {} | New Matched: {} | Previously seen: {} | Quota: {}'.format(datetime.now(), a, b, c, comments['quota_remaining']))
     s = datetime.now() - s
