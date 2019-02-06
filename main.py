@@ -5,25 +5,29 @@ import time
 import BotpySE as bp
 import cbenv
 
-#Bot Variables
+# Bot Variables
 email = cbenv.email
 password = cbenv.password
 commands = bp.all_commands
 bot = bp.Bot('CharlieB', commands, [57773], [], 'stackexchange.com', email, password)
 
-#Bot Message Handler
+
+# Bot Message Handler
 def cbm(msg):
     bot.post_global_message('[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] ' + msg)
 
-#Website Regex Generation
+
+# Website Regex Generation
 websiteWhitelist = open('websiteWhitelist.txt').read().splitlines()
 websiteRegex = '.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(websiteWhitelist) + '))'
 
-#Keyword Regex Generation
+
+# Keyword Regex Generation
 keywordBlacklist = open('keywordBlacklist.txt').read().splitlines()
 keywordRegex = '(' + ')|('.join(keywordBlacklist) + ')'
 
-#Comment Scanner
+
+# Comment Scanner
 def scanner(scan):
     if re.match(websiteRegex, scan):
         return 1
@@ -37,12 +41,14 @@ messages = {
     2:'Keyword Detected | [Comment]({}): `{}`'
 }
 
-#Get Comments
+
+# Get Comments
 def puller(site):
     comments = requests.get('http://api.stackexchange.com/2.2/comments?page=1&pagesize=75&key=IAkbitmze4B8KpacUfLqkw((&order=desc&sort=creation&site=' + site + '&filter=!SWK9z*gpvuT.wQS8A.').json()
     return comments['items']
 
-#Connect All Functions
+
+# Connect All Functions
 def smokedetector():
     items = puller('stackoverflow')
     a = b = c = 0
@@ -58,7 +64,10 @@ def smokedetector():
             c += 1
     print('{} Scanned: {} | New Matched: {} | Previously seen: {}'.format(datetime.now(), a, b, c))
 
+
 l = set()
+
+
 def runtime():
     s = datetime.now()
     smokedetector()
@@ -67,8 +76,9 @@ def runtime():
     s = 60 - s
     time.sleep(s)
 
-#Run Bot
+# Run Bot
 bot.start()
+
 
 while True:
     runtime()
