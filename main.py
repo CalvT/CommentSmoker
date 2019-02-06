@@ -36,9 +36,7 @@ messages = {
     2:'Keyword Detected | [Comment]({}): `{}`'
 }
 
-l = set()
-def pullcomments():
-    s = datetime.now()
+def smokedetector():
     comments = requests.get('http://api.stackexchange.com/2.2/comments?page=1&pagesize=75&key=IAkbitmze4B8KpacUfLqkw((&order=desc&sort=creation&site=stackoverflow&filter=!SWK9z*gpvuT.wQS8A.').json() 
     items = comments['items']
     a = b = c = 0
@@ -55,6 +53,11 @@ def pullcomments():
                     b = b + 1
         a = a + 1
     print('{} Scanned: {} | New Matched: {} | Previously seen: {} | Quota: {}'.format(datetime.now(), a, b, c, comments['quota_remaining']))
+
+l = set()
+def pullcomments():
+    s = datetime.now()
+    smokedetector()
     s = datetime.now() - s
     s = s.total_seconds()
     s = 60 - s
