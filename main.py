@@ -17,19 +17,27 @@ def cbm(msg):
     bot.post_global_message('[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] ' + msg)
 
 
-# Website Regex Generation
+#Regex Generation
+charcoalWebsites = requests.get('https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/blacklisted_websites.txt').text.splitlines()
+charcoalWebsitesRegex = '(' + ')|('.join(charcoalWebsites) + ')'
+
+charcoalKeywords = requests.get('https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/bad_keywords.txt').text.splitlines()
+charcoalKeywordsRegex = '(' + ')|('.join(charcoalKeywords) + ')'
+
 websiteWhitelist = open('websiteWhitelist.txt').read().splitlines()
 websiteRegex = '.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(websiteWhitelist) + '))'
 
-
-# Keyword Regex Generation
 keywordBlacklist = open('keywordBlacklist.txt').read().splitlines()
 keywordRegex = '(' + ')|('.join(keywordBlacklist) + ')'
 
 
 # Comment Scanner
 def scanner(scan):
-    if re.match(websiteRegex, scan):
+    if re.match(charcoalWebsitesRegex, scan):
+        return 3
+    elif re.match(charcoalKeywordsRegex, scan):
+        return 4
+    elif re.match(websiteRegex, scan):
         return 1
     elif re.match(keywordRegex, scan):
         return 2
@@ -38,7 +46,9 @@ def scanner(scan):
 
 messages = {
     1: 'Website Detected | [Comment]({}): `{}`',
-    2: 'Keyword Detected | [Comment]({}): `{}`'
+    2: 'Keyword Detected | [Comment]({}): `{}`',
+    3: 'Charcoal Website Detected | [Comment]({}): `{}`',
+    4: 'Charcoal Keyword Detected | [Comment]({}): `{}`'
 }
 
 
