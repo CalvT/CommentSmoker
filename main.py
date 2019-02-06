@@ -46,8 +46,8 @@ def puller(site):
 def smokedetector():
     items = puller('stackoverflow')
     a = b = c = 0
-    for i in items:
-        data = items[a]
+    for data in items:
+        a += 1
         if data['comment_id'] not in l:
             x = scanner(data['body'])
             l.add(data['comment_id'])
@@ -56,7 +56,6 @@ def smokedetector():
                 b += 1
         else:
             c += 1
-        a += 1
     print('{} Scanned: {} | New Matched: {} | Previously seen: {}'.format(datetime.now(), a, b, c))
 
 l = set()
