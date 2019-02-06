@@ -58,7 +58,7 @@ def smokedetector():
                     cbm(messages.get(x).format(data['link'], data['body']))
                     b = b + 1
         a = a + 1
-    print('{} Scanned: {} | New Matched: {} | Previously seen: {} | Quota: {}'.format(datetime.now(), a, b, c, comments['quota_remaining']))
+    print('{} Scanned: {} | New Matched: {} | Previously seen: {}'.format(datetime.now(), a, b, c))
 
 l = set()
 def runtime():
