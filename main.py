@@ -48,16 +48,15 @@ def smokedetector():
     a = b = c = 0
     for i in items:
         data = items[a]
-        if data['owner']['reputation'] < 50:
-            if data['comment_id'] in l:
-                c = c + 1
-            else:
-                x = scanner(data['body'])
-                l.add(data['comment_id'])
-                if x > 0:
-                    cbm(messages.get(x).format(data['link'], data['body']))
-                    b = b + 1
-        a = a + 1
+        if data['comment_id'] not in l:
+            x = scanner(data['body'])
+            l.add(data['comment_id'])
+            if x > 0:
+                cbm(messages.get(x).format(data['link'], data['body']))
+                b += 1
+        else:
+            c += 1
+        a += 1
     print('{} Scanned: {} | New Matched: {} | Previously seen: {}'.format(datetime.now(), a, b, c))
 
 l = set()
