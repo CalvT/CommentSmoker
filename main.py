@@ -35,10 +35,10 @@ def scanner(scan):
         return 2
     else:
         return 0
-    
+
 messages = {
-    1:'Website Detected | [Comment]({}): `{}`',
-    2:'Keyword Detected | [Comment]({}): `{}`'
+    1: 'Website Detected | [Comment]({}): `{}`',
+    2: 'Keyword Detected | [Comment]({}): `{}`'
 }
 
 
