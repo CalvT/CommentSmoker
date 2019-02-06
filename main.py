@@ -5,24 +5,25 @@ import time
 import BotpySE as bp
 import cbenv
 
+#Bot Variables
 email = cbenv.email
 password = cbenv.password
-
 commands = bp.all_commands
-
-websiteWhitelist = open('websiteWhitelist.txt').read().splitlines()
-
-keywordBlacklist = open('keywordBlacklist.txt').read().splitlines()
-
-websiteRegex = '.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(websiteWhitelist) + '))'
-
-keywordRegex = '(' + ')|('.join(keywordBlacklist) + ')'
-
 bot = bp.Bot('CharlieB', commands, [57773], [], 'stackexchange.com', email, password)
 
+#Bot Message Handler
 def cbm(msg):
     bot.post_global_message('[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] ' + msg)
 
+#Website Regex Generation
+websiteWhitelist = open('websiteWhitelist.txt').read().splitlines()
+websiteRegex = '.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(websiteWhitelist) + '))'
+
+#Keyword Regex Generation
+keywordBlacklist = open('keywordBlacklist.txt').read().splitlines()
+keywordRegex = '(' + ')|('.join(keywordBlacklist) + ')'
+
+#Comment Scanner
 def scanner(scan):
     if re.match(websiteRegex, scan):
         return 1
@@ -36,9 +37,14 @@ messages = {
     2:'Keyword Detected | [Comment]({}): `{}`'
 }
 
+#Get Comments
+def puller(site):
+    comments = requests.get('http://api.stackexchange.com/2.2/comments?page=1&pagesize=75&key=IAkbitmze4B8KpacUfLqkw((&order=desc&sort=creation&site=' + site + '&filter=!SWK9z*gpvuT.wQS8A.').json()
+    return comments['items']
+
+#Connect All Functions
 def smokedetector():
-    comments = requests.get('http://api.stackexchange.com/2.2/comments?page=1&pagesize=75&key=IAkbitmze4B8KpacUfLqkw((&order=desc&sort=creation&site=stackoverflow&filter=!SWK9z*gpvuT.wQS8A.').json() 
-    items = comments['items']
+    items = puller('stackoverflow')
     a = b = c = 0
     for i in items:
         data = items[a]
@@ -55,7 +61,7 @@ def smokedetector():
     print('{} Scanned: {} | New Matched: {} | Previously seen: {} | Quota: {}'.format(datetime.now(), a, b, c, comments['quota_remaining']))
 
 l = set()
-def pullcomments():
+def runtime():
     s = datetime.now()
     smokedetector()
     s = datetime.now() - s
@@ -63,7 +69,8 @@ def pullcomments():
     s = 60 - s
     time.sleep(s)
 
+#Run Bot
 bot.start()
 
 while True:
-    pullcomments()
+    runtime()
