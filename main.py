@@ -1,5 +1,5 @@
 import requests
-import re
+import regex
 from datetime import datetime
 import time
 import BotpySE as bp
@@ -33,13 +33,13 @@ keywordRegex = '(' + ')|('.join(keywordBlacklist) + ')'
 
 # Comment Scanner
 def scanner(scan):
-    if re.match(charcoalWebsitesRegex, scan):
+    if regex.match(charcoalWebsitesRegex, scan):
         return 3
-    elif re.match(charcoalKeywordsRegex, scan):
+    elif regex.match(charcoalKeywordsRegex, scan):
         return 4
-    elif re.match(websiteRegex, scan):
+    elif regex.match(websiteRegex, scan):
         return 1
-    elif re.match(keywordRegex, scan):
+    elif regex.match(keywordRegex, scan):
         return 2
     else:
         return 0
