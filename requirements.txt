@@ -1,3 +1,2 @@
-StackAPI==0.1.9
-ChatExchange==0.0.4
 BotpySE==0.7.3
+regex==2019.02.06
