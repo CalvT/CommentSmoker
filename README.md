@@ -1,6 +1,7 @@
 # CommentSmoker
 
 [![Open issues](https://img.shields.io/github/issues/CalvT/CommentSmoker.svg)](https://github.com/CalvT/CommentSmoker/issues)
+[![Build](https://api.travis-ci.org/CalvT/CommentSmoker.svg)](https://travis-ci.org/CalvT/CommentSmoker)
 [![Maintainability](https://api.codeclimate.com/v1/badges/1245ffaf5292557573e9/maintainability)](https://codeclimate.com/github/CalvT/CommentSmoker/maintainability)
 
 CommentSmoker is a Bot designed in Python to scan comments on Stack Overflow. It accesses these via the [Stack Exchange API](https://api.stackexchange.com), and then posts them to chat using [Botpy](https://github.com/SOBotics/Botpy).
