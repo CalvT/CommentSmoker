@@ -33,13 +33,13 @@ keywordRegex = '(' + ')|('.join(keywordBlacklist) + ')'
 
 # Comment Scanner
 def scanner(scan):
-    if regex.match(charcoalWebsitesRegex, scan):
+    if regex.search(charcoalWebsitesRegex, scan):
         return 3
-    elif regex.match(charcoalKeywordsRegex, scan):
+    elif regex.search(charcoalKeywordsRegex, scan):
         return 4
-    elif regex.match(websiteRegex, scan):
+    elif regex.search(websiteRegex, scan):
         return 1
-    elif regex.match(keywordRegex, scan):
+    elif regex.search(keywordRegex, scan):
         return 2
     else:
         return 0
