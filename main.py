@@ -10,38 +10,39 @@ email = cbenv.email
 password = cbenv.password
 commands = bp.all_commands
 site = 'stackexchange.com'
+botHeader = '[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] '
 bot = bp.Bot('CharlieB', commands, [57773], [], site, email, password)
 
 
 # Bot Message Handler
 def cbm(msg):
-    bot.post_global_message('[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] ' + msg)
+    bot.post_global_message(botHeader + msg)
 
 
 # Regex Generation
-charcoalGH = 'https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/'
-charcoalWebsites = requests.get(charcoalGH + 'blacklisted_websites.txt').text.splitlines()
-charcoalWebsitesRegex = r'(?i)({})'.format('|'.join(charcoalWebsites))
+chqGH = 'https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/'
+chqW = requests.get(chqGH + 'blacklisted_websites.txt').text.splitlines()
+chqWR = r'(?i)({})'.format('|'.join(chqW))
 
-charcoalKeywords = requests.get(charcoalGH + 'bad_keywords.txt').text.splitlines()
-charcoalKeywordsRegex = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(charcoalKeywords))
+chqK = requests.get(chqGH + 'bad_keywords.txt').text.splitlines()
+chqKR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqK))
 
-websiteWhitelist = open('websiteWhitelist.txt').read().splitlines()
-websiteRegex = r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(websiteWhitelist) + '))'
+wW = open('websiteWhitelist.txt').read().splitlines()
+wR = r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(wW) + '))'
 
-keywordBlacklist = open('keywordBlacklist.txt').read().splitlines()
-keywordRegex = r'(' + ')|('.join(keywordBlacklist) + ')'
+kB = open('keywordBlacklist.txt').read().splitlines()
+kR = r'(' + ')|('.join(kB) + ')'
 
 
 # Comment Scanner
 def scanner(scan):
-    if regex.search(charcoalWebsitesRegex, scan):
+    if regex.search(chqWR, scan):
         return 3
-    elif regex.search(charcoalKeywordsRegex, scan):
+    elif regex.search(chqKR, scan):
         return 4
-    elif regex.search(websiteRegex, scan):
+    elif regex.search(wR, scan):
         return 1
-    elif regex.search(keywordRegex, scan):
+    elif regex.search(kR, scan):
         return 2
     else:
         return 0
@@ -62,9 +63,9 @@ def puller(site):
         'page=1'
         '&pagesize=75'
         '&key=IAkbitmze4B8KpacUfLqkw(('
-        '&order=desc
-        '&sort=creation
-        '&site=' + site + 
+        '&order=desc'
+        '&sort=creation'
+        '&site=' + site +
         '&filter=!SWK9z*gpvuT.wQS8A.'
     ).json()
     return comments['items']
@@ -76,9 +77,9 @@ def smokedetector():
     a = b = c = 0
     for data in items:
         a += 1
-        if data['comment_id'] not in l:
+        if data['comment_id'] not in cIDs:
             x = scanner(data['body'])
-            l.add(data['comment_id'])
+            cIDs.add(data['comment_id'])
             if x > 0:
                 cbm(messages.get(x).format(data['link'], data['body']))
                 b += 1
@@ -89,7 +90,7 @@ def smokedetector():
         .format(datetime.now(), a, b, c))
 
 
-l = set()
+cIDs = set()
 
 
 def runtime():
