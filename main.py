@@ -9,7 +9,8 @@ import cbenv
 email = cbenv.email
 password = cbenv.password
 commands = bp.all_commands
-bot = bp.Bot('CharlieB', commands, [57773], [], 'stackexchange.com', email, password)
+site = 'stackexchange.com'
+bot = bp.Bot('CharlieB', commands, [57773], [], site, email, password)
 
 
 # Bot Message Handler
@@ -17,18 +18,19 @@ def cbm(msg):
     bot.post_global_message('[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] ' + msg)
 
 
-#Regex Generation
-charcoalWebsites = requests.get('https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/blacklisted_websites.txt').text.splitlines()
+# Regex Generation
+charcoalGH = 'https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/'
+charcoalWebsites = requests.get(charcoalGH + 'blacklisted_websites.txt').text.splitlines()
 charcoalWebsitesRegex = r'(?i)({})'.format('|'.join(charcoalWebsites))
 
-charcoalKeywords = requests.get('https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/bad_keywords.txt').text.splitlines()
+charcoalKeywords = requests.get(charcoalGH + 'bad_keywords.txt').text.splitlines()
 charcoalKeywordsRegex = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(charcoalKeywords))
 
 websiteWhitelist = open('websiteWhitelist.txt').read().splitlines()
-websiteRegex = '.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(websiteWhitelist) + '))'
+websiteRegex = r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(websiteWhitelist) + '))'
 
 keywordBlacklist = open('keywordBlacklist.txt').read().splitlines()
-keywordRegex = '(' + ')|('.join(keywordBlacklist) + ')'
+keywordRegex = r'(' + ')|('.join(keywordBlacklist) + ')'
 
 
 # Comment Scanner
@@ -44,6 +46,7 @@ def scanner(scan):
     else:
         return 0
 
+
 messages = {
     1: 'Website Detected | [Comment]({}): `{}`',
     2: 'Keyword Detected | [Comment]({}): `{}`',
@@ -54,7 +57,16 @@ messages = {
 
 # Get Comments
 def puller(site):
-    comments = requests.get('http://api.stackexchange.com/2.2/comments?page=1&pagesize=75&key=IAkbitmze4B8KpacUfLqkw((&order=desc&sort=creation&site=' + site + '&filter=!SWK9z*gpvuT.wQS8A.').json()
+    comments = requests.get(
+        'http://api.stackexchange.com/2.2/comments?'
+        'page=1'
+        '&pagesize=75'
+        '&key=IAkbitmze4B8KpacUfLqkw(('
+        '&order=desc
+        '&sort=creation
+        '&site=' + site + 
+        '&filter=!SWK9z*gpvuT.wQS8A.'
+    ).json()
     return comments['items']
 
 
@@ -72,7 +84,9 @@ def smokedetector():
                 b += 1
         else:
             c += 1
-    print('{} Scanned: {} | New Matched: {} | Previously seen: {}'.format(datetime.now(), a, b, c))
+    print(
+        '{} Scanned: {} | New Matched: {} | Previously seen: {}'
+        .format(datetime.now(), a, b, c))
 
 
 l = set()
@@ -85,6 +99,7 @@ def runtime():
     s = s.total_seconds()
     s = 60 - s
     time.sleep(s)
+
 
 # Run Bot
 bot.start()
