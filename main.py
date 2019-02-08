@@ -19,10 +19,10 @@ def cbm(msg):
 
 #Regex Generation
 charcoalWebsites = requests.get('https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/blacklisted_websites.txt').text.splitlines()
-charcoalWebsitesRegex = '(' + ')|('.join(charcoalWebsites) + ')'
+charcoalWebsitesRegex = r'(?i)({})'.format('|'.join(charcoalWebsites))
 
 charcoalKeywords = requests.get('https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/bad_keywords.txt').text.splitlines()
-charcoalKeywordsRegex = '(' + ')|('.join(charcoalKeywords) + ')'
+charcoalKeywordsRegex = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(charcoalKeywords))
 
 websiteWhitelist = open('websiteWhitelist.txt').read().splitlines()
 websiteRegex = '.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(websiteWhitelist) + '))'
