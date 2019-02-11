@@ -12,7 +12,7 @@ commands = bp.all_commands
 site = 'stackexchange.com'
 botHeader = '[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] '
 rooms = [57773]
-bot = bp.Bot('CharlieB', commands, rooms, ['runtime()'], site, email, password)
+bot = bp.Bot('CharlieB', commands, rooms, [], site, email, password)
 
 
 # Bot Message Handler
@@ -39,15 +39,16 @@ kR = r'(' + ')|('.join(kB) + ')'
 # Comment Scanner
 def scanner(scan):
     if regex.search(chqWR, scan):
-        return 3
+        result == 3
     elif regex.search(chqKR, scan):
-        return 4
+        result == 4
     elif regex.search(wR, scan):
-        return 1
+        result == 1
     elif regex.search(kR, scan):
-        return 2
+        result == 2
     else:
-        return 0
+        result == 0
+    return result
 
 
 messages = {
@@ -111,3 +112,4 @@ def runtime():
 
 # Run Bot
 bot.start()
+runtime()
