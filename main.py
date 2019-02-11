@@ -104,6 +104,7 @@ def runtime():
         s = s.total_seconds()
         d = sum(cRT[-10:]) / 10
         s = 40 - s + d
+        print(str(s) + " | " + str(d))
         time.sleep(s)
 
 
