@@ -39,15 +39,15 @@ kR = r'(' + ')|('.join(kB) + ')'
 # Comment Scanner
 def scanner(scan):
     if regex.search(chqWR, scan):
-        result == 3
+        result = 3
     elif regex.search(chqKR, scan):
-        result == 4
+        result = 4
     elif regex.search(wR, scan):
-        result == 1
+        result = 1
     elif regex.search(kR, scan):
-        result == 2
+        result = 2
     else:
-        result == 0
+        result = 0
     return result
 
 
