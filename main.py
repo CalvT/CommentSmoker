@@ -11,7 +11,8 @@ password = cbenv.password
 commands = bp.all_commands
 site = 'stackexchange.com'
 botHeader = '[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] '
-bot = bp.Bot('CharlieB', commands, [57773], ['runtime()'], site, email, password)
+rooms = [57773]
+bot = bp.Bot('CharlieB', commands, rooms, ['runtime()'], site, email, password)
 
 
 # Bot Message Handler
@@ -85,7 +86,7 @@ def smokedetector():
                 cbm(messages.get(x).format(data['link'], data['body']))
                 b += 1
         else:
-            c += 1    
+            c += 1
     cRT.append(c)
     print(
         '{} Scanned: {} | New Matched: {} | Previously seen: {}'
