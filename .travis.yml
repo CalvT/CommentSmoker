@@ -1,3 +1,7 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=752dfa2a280113b9655489c60d7a92b882e0a01ecaa8138fc8b3bda8e4032670
+
 language: python
 sudo: true
 python:
@@ -5,6 +9,14 @@ python:
   
 install:
   - pip install -r requirements.txt
-  
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
 script:
   - flake8 ./
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
