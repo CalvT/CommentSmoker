@@ -11,7 +11,7 @@ password = cbenv.password
 commands = bp.all_commands
 site = 'stackexchange.com'
 botHeader = '[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] '
-bot = bp.Bot('CharlieB', commands, [57773], [], site, email, password)
+bot = bp.Bot('CharlieB', commands, [57773], ['runtime()'], site, email, password)
 
 
 # Bot Message Handler
@@ -21,6 +21,7 @@ def cbm(msg):
 
 # Regex Generation
 chqGH = 'https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/'
+
 chqW = requests.get(chqGH + 'blacklisted_websites.txt').text.splitlines()
 chqWR = r'(?i)({})'.format('|'.join(chqW))
 
@@ -84,27 +85,27 @@ def smokedetector():
                 cbm(messages.get(x).format(data['link'], data['body']))
                 b += 1
         else:
-            c += 1
+            c += 1    
+    cRT.append(c)
     print(
         '{} Scanned: {} | New Matched: {} | Previously seen: {}'
         .format(datetime.now(), a, b, c))
 
 
 cIDs = set()
+cRT = []
 
 
 def runtime():
-    s = datetime.now()
-    smokedetector()
-    s = datetime.now() - s
-    s = s.total_seconds()
-    s = 60 - s
-    time.sleep(s)
+    while True:
+        s = datetime.now()
+        smokedetector()
+        s = datetime.now() - s
+        s = s.total_seconds()
+        d = sum(cRT[-10:]) / 10
+        s = 40 - s + d
+        time.sleep(s)
 
 
 # Run Bot
 bot.start()
-
-
-while True:
-    runtime()
