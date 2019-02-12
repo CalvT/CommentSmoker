@@ -10,7 +10,7 @@ email = cbenv.email
 password = cbenv.password
 commands = bp.all_commands
 site = 'stackexchange.com'
-botHeader = '[ [CharlieB](https://github.com/CalvT/CommentSmoker) ] '
+botHeader = '[ [CommentSmoker](https://github.com/CalvT/CommentSmoker) ] '
 rooms = [57773]
 bot = bp.Bot('CharlieB', commands, rooms, [], site, email, password)
 
@@ -54,8 +54,8 @@ def scanner(scan):
 messages = {
     1: 'Website Detected | [Comment]({}): `{}`',
     2: 'Keyword Detected | [Comment]({}): `{}`',
-    3: 'Charcoal Website Detected | [Comment]({}): `{}`',
-    4: 'Charcoal Keyword Detected | [Comment]({}): `{}`'
+    3: 'Charcoal Website Detected | [Comment]({}): `{}` @CalvT',
+    4: 'Charcoal Keyword Detected | [Comment]({}): `{}` @CalvT'
 }
 
 
