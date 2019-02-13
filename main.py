@@ -95,7 +95,7 @@ def smokedetector(site):
 
 
 cIDs = set()
-cRT = []
+cRT = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
 
 
 def runtime():
