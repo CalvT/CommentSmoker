@@ -52,10 +52,10 @@ def scanner(scan):
 
 
 messages = {
-    1: 'Website Detected | [Comment]({}): `{}`',
-    2: 'Keyword Detected | [Comment]({}): `{}`',
-    3: 'Charcoal Website Detected | [Comment]({}): `{}` @CalvT',
-    4: 'Charcoal Keyword Detected | [Comment]({}): `{}` @CalvT'
+    1: 'Website Detected | [Comment: {}]({}): `{}`',
+    2: 'Keyword Detected | [Comment: {}]({}): `{}`',
+    3: 'Charcoal Website Detected | [Comment: {}]({}): `{}` @CalvT',
+    4: 'Charcoal Keyword Detected | [Comment: {}]({}): `{}` @CalvT'
 }
 
 
@@ -75,8 +75,8 @@ def puller(site):
 
 
 # Connect All Functions
-def smokedetector():
-    items = puller('stackoverflow')
+def smokedetector(site):
+    items = puller(site)
     a = b = c = 0
     for data in items:
         a += 1
@@ -84,14 +84,14 @@ def smokedetector():
             x = scanner(data['body'])
             cIDs.add(data['comment_id'])
             if x > 0:
-                cbm(messages.get(x).format(data['link'], data['body']))
+                cbm(messages.get(x).format(site, data['link'], data['body']))
                 b += 1
         else:
             c += 1
     cRT.append(c)
     print(
-        '{} Scanned: {} | New Matched: {} | Previously seen: {}'
-        .format(datetime.now(), a, b, c))
+        '{} Site: {} | Scanned: {} | New Matched: {} | Previously seen: {}'
+        .format(datetime.now(), site, a, b, c))
 
 
 cIDs = set()
@@ -101,7 +101,8 @@ cRT = []
 def runtime():
     while True:
         s = datetime.now()
-        smokedetector()
+        smokedetector('stackoverflow')
+        smokedetector('stackapps')
         s = datetime.now() - s
         s = s.total_seconds()
         d = sum(cRT[-10:]) / 10
