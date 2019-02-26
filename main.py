@@ -20,7 +20,7 @@ cbm_queue = {}
 
 
 def cbmG(msg):
-    cbm_queue[datetime.now()] = (botHeader + msg)
+    cbm_queue[datetime.now()] = (botHeader + msg)[:499]
 
 
 def cbm():
