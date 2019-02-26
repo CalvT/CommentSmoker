@@ -19,16 +19,16 @@ bot = bp.Bot('CharlieB', commands, rooms, [], site, email, password)
 cbm_queue = {}
 
 
-def cbm_generator():
+def cbmG(msg):
     cbm_queue[datetime.now()] = (botHeader + msg)
 
 
 def cbm():
-  while len(cbm_queue) > 0:
-    t = list(cbm_queue)[0]
-    bot.post_global_message(cbm_queue[t])
-    del cbm_queue[t]
-    time.sleep(5)
+    while len(cbm_queue) > 0:
+        t = list(cbm_queue)[0]
+        bot.post_global_message(cbm_queue[t])
+        del cbm_queue[t]
+        time.sleep(5)
 
 
 # Regex Generation
@@ -95,7 +95,7 @@ def smokedetector(site):
             x = scanner(data['body'])
             cIDs.add(data['comment_id'])
             if x > 0:
-                cbm_generator(messages.get(x).format(site, data['link'], data['body']))
+                cbmG(messages.get(x).format(site, data['link'], data['body']))
                 b += 1
         else:
             c += 1
