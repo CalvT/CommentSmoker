@@ -53,8 +53,8 @@ def scanner(scan):
         result = 3
     elif regex.search(chqKR, scan):
         result = 4
-    elif regex.search(wR, scan):
-        result = 1
+#    elif regex.search(wR, scan):
+#        result = 1
     elif regex.search(kR, scan):
         result = 2
     else:
