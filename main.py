@@ -15,9 +15,20 @@ rooms = [57773]
 bot = bp.Bot('CharlieB', commands, rooms, [], site, email, password)
 
 
-# Bot Message Handler
-def cbm(msg):
-    bot.post_global_message(botHeader + msg)
+# Bot Message System
+cbm_queue = {}
+
+
+def cbm_generator():
+    cbm_queue[datetime.now()] = (botHeader + msg)
+
+
+def cbm():
+  while len(cbm_queue) > 0:
+    t = list(cbm_queue)[0]
+    bot.post_global_message(cbm_queue[t])
+    del cbm_queue[t]
+    time.sleep(5)
 
 
 # Regex Generation
@@ -84,7 +95,7 @@ def smokedetector(site):
             x = scanner(data['body'])
             cIDs.add(data['comment_id'])
             if x > 0:
-                cbm(messages.get(x).format(site, data['link'], data['body']))
+                cbm_generator(messages.get(x).format(site, data['link'], data['body']))
                 b += 1
         else:
             c += 1
@@ -103,6 +114,7 @@ def runtime():
         s = datetime.now()
         smokedetector('stackoverflow')
         smokedetector('stackapps')
+        cbm()
         s = datetime.now() - s
         s = s.total_seconds()
         d = sum(cRT[-10:]) / 10
