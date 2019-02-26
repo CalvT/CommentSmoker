@@ -20,7 +20,7 @@ cbm_queue = {}
 
 
 def cbmG(msg):
-    cbm_queue[datetime.now()] = (botHeader + msg)[:499]
+    cbm_queue[datetime.now()] = (botHeader + msg)
 
 
 def cbm():
@@ -95,7 +95,7 @@ def smokedetector(site):
             x = scanner(data['body'])
             cIDs.add(data['comment_id'])
             if x > 0:
-                cbmG(messages.get(x).format(site, data['link'], data['body']))
+                cbmG(messages.get(x).format(site, data['link'], data['body'][:300]))
                 b += 1
         else:
             c += 1
