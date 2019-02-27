@@ -5,6 +5,11 @@ import time
 import BotpySE as bp
 import cbenv
 
+
+def startPoint():
+    runtime()
+
+
 # Bot Variables
 email = cbenv.email
 password = cbenv.password
@@ -12,39 +17,39 @@ commands = bp.all_commands
 site = 'stackexchange.com'
 botHeader = '[ [CommentSmoker](https://github.com/CalvT/CommentSmoker) ] '
 rooms = [57773]
-bot = bp.Bot('CharlieB', commands, rooms, [], site, email, password)
+bot = bp.Bot('CharlieB', commands, rooms, ['startPoint()'], site, email, password)
 
 
 # Bot Message System
-cbm_queue = {}
+cbmQueue = {}
 
 
-def cbmG(msg):
-    cbm_queue[datetime.now()] = (botHeader + msg)
+def cbmGenerator(msg):
+    cbmQueue[datetime.now()] = (botHeader + msg)
 
 
 def cbm():
-    while len(cbm_queue) > 0:
-        t = list(cbm_queue)[0]
-        bot.post_global_message(cbm_queue[t])
-        del cbm_queue[t]
-        time.sleep(5)
+    while len(cbmQueue) > 0:
+        t = list(cbmQueue)[0]
+        bot.post_global_message(cbmQueue[t])
+        del cbmQueue[t]
+        time.sleep(2)
 
 
 # Regex Generation
 chqGH = 'https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/'
 
-chqW = requests.get(chqGH + 'blacklisted_websites.txt').text.splitlines()
-chqWR = r'(?i)({})'.format('|'.join(chqW))
+chqWebsites = requests.get(chqGH + 'blacklisted_websites.txt').text.splitlines()
+chqWR = r'(?i)({})'.format('|'.join(chqWebsites))
 
-chqK = requests.get(chqGH + 'bad_keywords.txt').text.splitlines()
-chqKR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqK))
+chqKeywords = requests.get(chqGH + 'bad_keywords.txt').text.splitlines()
+chqKR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqKeywords))
 
-wW = open('websiteWhitelist.txt').read().splitlines()
-wR = r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(wW) + '))'
+wWebsites = open('websiteWhitelist.txt').read().splitlines()
+wWR = r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(wWebsites) + '))'
 
-kB = open('keywordBlacklist.txt').read().splitlines()
-kR = r'(' + ')|('.join(kB) + ')'
+bKeywords = open('keywordBlacklist.txt').read().splitlines()
+bKR = r'(' + ')|('.join(bKeywords) + ')'
 
 
 # Comment Scanner
@@ -53,9 +58,9 @@ def scanner(scan):
         result = 3
     elif regex.search(chqKR, scan):
         result = 4
-#    elif regex.search(wR, scan):
+#    elif regex.search(wWR, scan):
 #        result = 1
-    elif regex.search(kR, scan):
+    elif regex.search(bKR, scan):
         result = 2
     else:
         result = 0
@@ -71,7 +76,7 @@ messages = {
 
 
 # Get Comments
-def puller(site):
+def fetcher(site):
     comments = requests.get(
         'http://api.stackexchange.com/2.2/comments?'
         'page=1'
@@ -87,7 +92,7 @@ def puller(site):
 
 # Connect All Functions
 def smokedetector(site):
-    items = puller(site)
+    items = fetcher(site)
     a = b = c = 0
     for data in items:
         a += 1
@@ -95,7 +100,8 @@ def smokedetector(site):
             x = scanner(data['body'])
             cIDs.add(data['comment_id'])
             if x > 0:
-                cbmG(messages.get(x).format(site, data['link'], data['body'][:300]))
+                cbmGenerator(messages.get(x)
+                .format(site, data['link'], data['body'][:300]))
                 b += 1
         else:
             c += 1
@@ -125,4 +131,3 @@ def runtime():
 
 # Run Bot
 bot.start()
-runtime()
