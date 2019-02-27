@@ -7,24 +7,25 @@ import subprocess
 import time
 
 
-# Bot Variables
+# Bot Variables and Startup
 email = cbenv.email
 password = cbenv.password
-commands = bp.all_commands
+commands = [bp.CommandAlive,
+            bp.CommandListRunningCommands,
+            bp.CommandPrivilegeUser,
+            bp.CommandStop,
+            bp.CommandUnprivilegeUser,
+            bp.CommandAmiprivileged,
+            bp.CommandListPrivilegedUsers,
+            bp.CommandReboot]
 site = 'stackexchange.com'
 botHeader = '[ [CommentSmoker](https://github.com/CalvT/CommentSmoker) ] '
 rooms = [57773]
 bot = bp.Bot('CharlieB', commands, rooms, [], site, email, password)
-
-
-class gitCommand(Command):
-    @staticmethod
-    def usage():
-        return ["pull"]
-
-    def run(self):
-        output = subprocess.check_output(["git", "pull"])
-        self.reply(output)
+bot.start()
+bot.add_privilege_type(1, "regular_user")
+bot.add_privilege_type(2, "owner")
+bot.set_room_owner_privs_max()
 
 
 # Bot Message System
@@ -108,7 +109,7 @@ def smokedetector(site):
             cIDs.add(data['comment_id'])
             if x > 0:
                 cbmGenerator(messages.get(x)
-                .format(site, data['link'], data['body'][:300]))
+                            .format(site, data['link'], data['body'][:300]))
                 b += 1
         else:
             c += 1
@@ -136,6 +137,5 @@ def runtime():
         time.sleep(s)
 
 
-# Run Bot
-bot.start()
+# Run Scanner
 runtime()
