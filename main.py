@@ -7,25 +7,89 @@ import subprocess
 import time
 
 
-# Bot Variables and Startup
+# Bot Variables
 email = cbenv.email
 password = cbenv.password
-commands = [bp.CommandAlive,
-            bp.CommandListRunningCommands,
-            bp.CommandPrivilegeUser,
-            bp.CommandStop,
-            bp.CommandUnprivilegeUser,
-            bp.CommandAmiprivileged,
-            bp.CommandListPrivilegedUsers,
-            bp.CommandReboot]
 site = 'stackexchange.com'
 botHeader = '[ [CommentSmoker](https://github.com/CalvT/CommentSmoker) ] '
 rooms = [57773]
+
+
+#Bot Commands
+class CommandAlive(bp.Command):
+    @staticmethod
+    def usage():
+        return ["alive", "status"]
+
+    def run(self):
+        self.reply("Yes")
+
+class CommandAmiprivileged(bp.Command):
+    def usage():
+        return ["amiprivileged", "doihaveprivs", "privileges"]
+
+    def run(self):
+        user_privs = self.message.user.get_privilege_type()
+        if user_privs is None:
+            self.reply("You do not have any privileges.")
+        else:
+            self.reply("You have the privilege: " + user_privs.name)
+
+class CommandListPrivilegedUsers(bp.Command):
+    def usage():
+        return ["membership", "privileged", "listprivileged"]
+
+    def run(self):
+        privilege_list = list()
+
+        for each_user in self.message.room.get_users():
+            if each_user.get_privilege_type() is not None:
+                privilege_list.append([each_user.id, each_user.get_privilege_type().name])
+
+        table = tabulate.tabulate(privilege_list, headers=["User ID", "Privilege level"], tablefmt="orgtbl")
+
+        self.post("    " + table.replace("\n", "\n    "))
+
+class CommandReboot(bp.Command):
+    @staticmethod
+    def usage():
+        return ['reboot', 'restart']
+
+    def run(self):
+        self.reply("Rebooting...")
+        Utilities.StopReason.reboot = True
+
+class CommandStop(bp.Command):
+    @staticmethod
+    def usage():
+        return ['stop', 'shutdown']
+
+    def run(self):
+        self.reply("Shutting down...")
+        Utilities.StopReason.shutdown = True
+
+class CommandPull(bp.Command):
+    @staticmethod
+    def usage():
+        return ['pull']
+
+    def run(self):
+        output = subprocess.check_output(["git", "pull"])
+        self.reply(output)
+
+commands = [CommandAlive,
+            CommandStop,
+            CommandAmiprivileged,
+            CommandListPrivilegedUsers,
+            CommandReboot,
+            CommandPull]
+
+
+#Bot Starup
 bot = bp.Bot('CharlieB', commands, rooms, [], site, email, password)
 bot.start()
 bot.add_privilege_type(1, "regular_user")
 bot.add_privilege_type(2, "owner")
-bot.set_room_owner_privs_max()
 
 
 # Bot Message System
@@ -47,7 +111,8 @@ def cbm():
 # Regex Generation
 chqGH = 'https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/'
 
-chqWebsites = requests.get(chqGH + 'blacklisted_websites.txt').text.splitlines()
+chqWebsites = requests.get(chqGH + 'blacklisted_websites.txt').text
+              .splitlines()
 chqWR = r'(?i)({})'.format('|'.join(chqWebsites))
 
 chqKeywords = requests.get(chqGH + 'bad_keywords.txt').text.splitlines()
@@ -109,7 +174,7 @@ def smokedetector(site):
             cIDs.add(data['comment_id'])
             if x > 0:
                 cbmGenerator(messages.get(x)
-                            .format(site, data['link'], data['body'][:300]))
+                             .format(site, data['link'], data['body'][:300]))
                 b += 1
         else:
             c += 1
