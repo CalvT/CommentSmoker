@@ -60,7 +60,7 @@ class CommandReboot(bp.Command):
 
     def run(self):
         self.reply("Rebooting...")
-        Utilities.StopReason.reboot = True
+        bp.Utilities.StopReason.reboot = True
 
 
 class CommandStop(bp.Command):
@@ -70,7 +70,7 @@ class CommandStop(bp.Command):
 
     def run(self):
         self.reply("Shutting down...")
-        Utilities.StopReason.shutdown = True
+        bp.Utilities.StopReason.shutdown = True
 
 
 class CommandPull(bp.Command):
