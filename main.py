@@ -61,7 +61,7 @@ class CommandReboot(bp.Command):
     @staticmethod
     def usage():
         return ['reboot', 'restart']
-    
+
     def privileges(self):
         return 2
 
@@ -84,7 +84,7 @@ class CommandPull(bp.Command):
     @staticmethod
     def usage():
         return ['pull']
-    
+
     def privileges(self):
         return 2
 
