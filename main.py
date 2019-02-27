@@ -113,7 +113,7 @@ cbmQueue = {}
 
 
 def cbmGenerator(msg):
-    cbmQueue[datetime.now()] = (botHeader + msg)
+    cbmQueue[datetime.now()] = (botHeader + msg)[:499]
 
 
 def cbm():
