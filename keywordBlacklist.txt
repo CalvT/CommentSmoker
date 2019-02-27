@@ -1,4 +1,4 @@
-ass
+ass\b
 asshole
 bollocks
 bullshit
