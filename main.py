@@ -4,6 +4,7 @@ import cbenv
 import regex
 import requests
 import subprocess
+import tabulate
 import time
 
 
@@ -46,9 +47,12 @@ class CommandListPrivilegedUsers(bp.Command):
 
         for each_user in self.message.room.get_users():
             if each_user.get_privilege_type() is not None:
-                privilege_list.append([each_user.id, each_user.get_privilege_type().name])
+                privilege_list.append([each_user.id,
+                                      each_user.get_privilege_type().name])
 
-        table = tabulate.tabulate(privilege_list, headers=["User ID", "Privilege level"], tablefmt="orgtbl")
+        table = tabulate.tabulate(privilege_list,
+                                  headers=["User ID", "Privilege level"],
+                                  tablefmt="orgtbl")
 
         self.post("    " + table.replace("\n", "\n    "))
 
@@ -57,6 +61,9 @@ class CommandReboot(bp.Command):
     @staticmethod
     def usage():
         return ['reboot', 'restart']
+    
+    def privileges(self):
+        return 2
 
     def run(self):
         self.reply("Rebooting...")
@@ -77,6 +84,9 @@ class CommandPull(bp.Command):
     @staticmethod
     def usage():
         return ['pull']
+    
+    def privileges(self):
+        return 2
 
     def run(self):
         output = subprocess.check_output(["git", "pull"])
@@ -117,7 +127,8 @@ def cbm():
 # Regex Generation
 chqGH = 'https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/'
 
-chqWebsites = requests.get(chqGH + 'blacklisted_websites.txt').text.splitlines()
+chqWebsites = requests.get(chqGH +
+                           'blacklisted_websites.txt').text.splitlines()
 chqWR = r'(?i)({})'.format('|'.join(chqWebsites))
 
 chqKeywords = requests.get(chqGH + 'bad_keywords.txt').text.splitlines()
