@@ -15,7 +15,7 @@ botHeader = '[ [CommentSmoker](https://github.com/CalvT/CommentSmoker) ] '
 rooms = [57773]
 
 
-#Bot Commands
+# Bot Commands
 class CommandAlive(bp.Command):
     @staticmethod
     def usage():
@@ -23,6 +23,7 @@ class CommandAlive(bp.Command):
 
     def run(self):
         self.reply("Yes")
+
 
 class CommandAmiprivileged(bp.Command):
     def usage():
@@ -34,6 +35,7 @@ class CommandAmiprivileged(bp.Command):
             self.reply("You do not have any privileges.")
         else:
             self.reply("You have the privilege: " + user_privs.name)
+
 
 class CommandListPrivilegedUsers(bp.Command):
     def usage():
@@ -50,6 +52,7 @@ class CommandListPrivilegedUsers(bp.Command):
 
         self.post("    " + table.replace("\n", "\n    "))
 
+
 class CommandReboot(bp.Command):
     @staticmethod
     def usage():
@@ -58,6 +61,7 @@ class CommandReboot(bp.Command):
     def run(self):
         self.reply("Rebooting...")
         Utilities.StopReason.reboot = True
+
 
 class CommandStop(bp.Command):
     @staticmethod
@@ -68,6 +72,7 @@ class CommandStop(bp.Command):
         self.reply("Shutting down...")
         Utilities.StopReason.shutdown = True
 
+
 class CommandPull(bp.Command):
     @staticmethod
     def usage():
@@ -77,6 +82,7 @@ class CommandPull(bp.Command):
         output = subprocess.check_output(["git", "pull"])
         self.reply(output)
 
+
 commands = [CommandAlive,
             CommandStop,
             CommandAmiprivileged,
@@ -85,7 +91,7 @@ commands = [CommandAlive,
             CommandPull]
 
 
-#Bot Starup
+# Bot Starup
 bot = bp.Bot('CharlieB', commands, rooms, [], site, email, password)
 bot.start()
 bot.add_privilege_type(1, "regular_user")
@@ -111,8 +117,7 @@ def cbm():
 # Regex Generation
 chqGH = 'https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/'
 
-chqWebsites = requests.get(chqGH + 'blacklisted_websites.txt').text
-              .splitlines()
+chqWebsites = requests.get(chqGH + 'blacklisted_websites.txt').text.splitlines()
 chqWR = r'(?i)({})'.format('|'.join(chqWebsites))
 
 chqKeywords = requests.get(chqGH + 'bad_keywords.txt').text.splitlines()
