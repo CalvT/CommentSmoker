@@ -127,7 +127,7 @@ wWebsites = open('websiteWhitelist.txt').read().splitlines()
 wWR = r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(wWebsites) + '))'
 
 bKeywords = open('keywordBlacklist.txt').read().splitlines()
-bKR = r'(' + ')|('.join(bKeywords) + ')'
+bKR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(bKeywords))
 
 
 # Comment Scanner
