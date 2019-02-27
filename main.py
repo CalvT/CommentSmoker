@@ -1,13 +1,10 @@
-import requests
-import regex
 from datetime import datetime
-import time
 import BotpySE as bp
 import cbenv
-
-
-def startPoint():
-    runtime()
+import regex
+import requests
+import subprocess
+import time
 
 
 # Bot Variables
@@ -17,7 +14,17 @@ commands = bp.all_commands
 site = 'stackexchange.com'
 botHeader = '[ [CommentSmoker](https://github.com/CalvT/CommentSmoker) ] '
 rooms = [57773]
-bot = bp.Bot('CharlieB', commands, rooms, ['startPoint()'], site, email, password)
+bot = bp.Bot('CharlieB', commands, rooms, [], site, email, password)
+
+
+class gitCommand(Command):
+    @staticmethod
+    def usage():
+        return ["pull"]
+
+    def run(self):
+        output = subprocess.check_output(["git", "pull"])
+        self.reply(output)
 
 
 # Bot Message System
@@ -131,3 +138,4 @@ def runtime():
 
 # Run Bot
 bot.start()
+runtime()
