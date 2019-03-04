@@ -221,7 +221,7 @@ cRT = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
 
 def runtime():
     while True:
-        if ll = 1:
+        if ll == 1:
             s = datetime.now()
             smokedetector('stackoverflow')
             smokedetector('stackapps')
