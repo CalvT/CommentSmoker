@@ -127,7 +127,7 @@ def cbm():
 # Regex Generation
 chqGH = 'https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/'
 
-chqWatched = requests.get(chqGH + 'watched_keywords.txt').text
+chqWatched = requests.get('https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/6cd431571f9a9cd65390ff1cf489139cb1e8354a/watched_keywords.txt').text
 chqWd = {}
 for line in chqWatched.splitlines():
       when, who, what = line.split('\t', 3)
