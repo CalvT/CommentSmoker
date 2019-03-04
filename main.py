@@ -134,8 +134,12 @@ chqDR = r'(?i)({})'.format('|'.join(chqDomains))
 chqKeywords = requests.get(chqGH + 'bad_keywords.txt').text.splitlines()
 chqKR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqKeywords))
 
-chqWatched = requests.get(chqGH + 'watched_keywords.txt').text.splitlines()
-chqWR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqWatched))
+chqWatched = requests.get(chqGH + 'watched_keywords.txt').text
+chqWd = {}
+for line in chqWatched.splitlines():
+      when, who, what = line.split('\t', 3)
+      chqWd[what] = "when: {0} who: {1}".format(when, who)
+chqWR = r'(?is)(?:^|\b|(?w:\b))(?:{})(?:\b|(?w:\b)|$)'.format('|'.join(chqWd.keys()))
 
 wWebsites = open('websiteWhitelist.txt').read().splitlines()
 wWR = r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(wWebsites) + '))'
