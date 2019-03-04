@@ -127,12 +127,15 @@ def cbm():
 # Regex Generation
 chqGH = 'https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/'
 
-chqWebsites = requests.get(chqGH +
+chqDomains = requests.get(chqGH +
                            'blacklisted_websites.txt').text.splitlines()
-chqWR = r'(?i)({})'.format('|'.join(chqWebsites))
+chqDR = r'(?i)({})'.format('|'.join(chqDomains))
 
 chqKeywords = requests.get(chqGH + 'bad_keywords.txt').text.splitlines()
 chqKR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqKeywords))
+
+chqWatched = requests.get(chqGH + 'watched_keywords.txt').text.splitlines()
+chqWR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqWatched))
 
 wWebsites = open('websiteWhitelist.txt').read().splitlines()
 wWR = r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(wWebsites) + '))'
@@ -143,10 +146,12 @@ bKR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(bKeywords))
 
 # Comment Scanner
 def scanner(scan):
-    if regex.search(chqWR, scan):
+    if regex.search(chqDR, scan):
         result = 3
     elif regex.search(chqKR, scan):
         result = 4
+    elif regex.search(chqWR, scan):
+        result = 5
 #    elif regex.search(wWR, scan):
 #        result = 1
     elif regex.search(bKR, scan):
@@ -160,7 +165,8 @@ messages = {
     1: 'Website Detected | [Comment: {}]({}): `{}`',
     2: 'Keyword Detected | [Comment: {}]({}): `{}`',
     3: 'Charcoal Website Detected | [Comment: {}]({}): `{}` @CalvT',
-    4: 'Charcoal Keyword Detected | [Comment: {}]({}): `{}` @CalvT'
+    4: 'Charcoal Keyword Detected | [Comment: {}]({}): `{}` @CalvT',
+    5: 'Charcoal Watched Keyword Detected | [Comment: {}]({}): `{}` @CalvT'
 }
 
 
