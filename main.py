@@ -125,9 +125,11 @@ def cbm():
 
 
 # Regex Generation
+ll = 0
+
 chqGH = 'https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/'
 
-chqWatched = requests.get('https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/6cd431571f9a9cd65390ff1cf489139cb1e8354a/watched_keywords.txt').text
+chqWatched = requests.get(chqGH + 'watched_keywords.txt').text
 chqWd = {}
 for line in chqWatched.splitlines():
       when, who, what = line.split('\t', 3)
@@ -147,6 +149,9 @@ wWR = r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(wWebsites) + '))'
 bKeywords = open('keywordBlacklist.txt').read().splitlines()
 bKR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(bKeywords))
 
+ll = 1
+cbmGenerator('Lists loaded')
+cbm()
 
 # Comment Scanner
 def scanner(scan):
@@ -216,16 +221,19 @@ cRT = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
 
 def runtime():
     while True:
-        s = datetime.now()
-        smokedetector('stackoverflow')
-        smokedetector('stackapps')
-        cbm()
-        s = datetime.now() - s
-        s = s.total_seconds()
-        d = sum(cRT[-10:]) / 10
-        s = 40 - s + d
-        print(str(s) + " | " + str(d))
-        time.sleep(s)
+        if ll = 1:
+            s = datetime.now()
+            smokedetector('stackoverflow')
+            smokedetector('stackapps')
+            cbm()
+            s = datetime.now() - s
+            s = s.total_seconds()
+            d = sum(cRT[-10:]) / 10
+            s = 40 - s + d
+            print(str(s) + " | " + str(d))
+            time.sleep(s)
+        else:
+            time.sleep(5)
 
 
 # Run Scanner
