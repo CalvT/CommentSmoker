@@ -128,7 +128,7 @@ def cbm():
 chqGH = 'https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/'
 
 chqDomains = requests.get(chqGH +
-                           'blacklisted_websites.txt').text.splitlines()
+                          'blacklisted_websites.txt').text.splitlines()
 chqDR = r'(?i)({})'.format('|'.join(chqDomains))
 
 chqKeywords = requests.get(chqGH + 'bad_keywords.txt').text.splitlines()
