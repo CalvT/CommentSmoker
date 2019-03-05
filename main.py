@@ -144,8 +144,8 @@ city_list = [
 chqWatched = requests.get(chqGH + 'watched_keywords.txt').text
 chqWd = {}
 for line in chqWatched.splitlines():
-      when, who, what = line.split('\t', 3)
-      chqWd[what] = "when: {0} who: {1}".format(when, who)
+    when, who, what = line.split('\t', 3)
+    chqWd[what] = "when: {0} who: {1}".format(when, who)
 chqWR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqWd.keys()))
 
 chqDomains = requests.get(chqGH +
@@ -163,6 +163,7 @@ bKR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(bKeywords))
 
 cbmGenerator('Lists loaded')
 cbm()
+
 
 # Comment Scanner
 def scanner(scan):
