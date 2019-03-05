@@ -93,12 +93,25 @@ class CommandPull(bp.Command):
         self.reply(output)
 
 
+class CommandHalt(bp.Command):
+    @staticmethod
+    def usage():
+        return ['halt']
+
+    def privileges(self):
+        return 2
+
+    def run(self):
+        self.reply('Halting scanning')
+
+
 commands = [CommandAlive,
             CommandStop,
             CommandAmiprivileged,
             CommandListPrivilegedUsers,
             CommandReboot,
-            CommandPull]
+            CommandPull,
+            CommandHalt]
 
 
 # Bot Starup
@@ -231,10 +244,10 @@ cIDs = set()
 cRT = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
 
 
-def runtime():
+def runtime(site):
     while True:
         s = datetime.now()
-        smokedetector('stackoverflow')
+        smokedetector(site)
         cbm()
         s = datetime.now() - s
         s = s.total_seconds()
@@ -247,4 +260,4 @@ def runtime():
 
 
 # Run Scanner
-runtime()
+runtime('stackoverflow')
