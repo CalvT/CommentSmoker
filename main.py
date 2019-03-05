@@ -5,7 +5,7 @@ import regex
 import requests
 import subprocess
 import tabulate
-import thread
+import _thread
 import time
 
 
@@ -214,7 +214,7 @@ def smokedetector(site):
     for data in items:
         a += 1
         if data['comment_id'] not in cIDs:
-            x = thread.start_new_thread(scanner, data['body'])
+            x = _thread.start_new_thread(scanner, data['body'])
             cIDs.add(data['comment_id'])
             if x > 0:
                 cbmGenerator(messages.get(x)
