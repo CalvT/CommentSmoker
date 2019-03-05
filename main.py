@@ -127,7 +127,7 @@ def cbm():
 # Regex Generation
 chqGH = 'https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/'
 
-city_list = [
+city = [
     "Agra", "Amritsar", "Bangalore", "Bhopal", "Chandigarh",
     "Chennai", "Coimbatore", "Delhi", "Dubai", "Durgapur",
     "Ghaziabad", "Hyderabad", "Jaipur", "Jalandhar", "Kolkata",
@@ -170,7 +170,7 @@ def scanner(scan):
         result = 3
     elif regex.search(chqKR, scan):
         result = 4
-    elif regex.search(chqWR, scan, city_list):
+    elif regex.search(chqWR, scan, city):
         result = 5
 #    elif regex.search(wWR, scan):
 #        result = 1
