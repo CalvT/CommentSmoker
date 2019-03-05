@@ -240,6 +240,8 @@ def runtime():
         s = s.total_seconds()
         d = sum(cRT[-10:]) / 10
         s = 40 - s + d
+        if s < 0:
+            s = 5
         print(str(s) + " | " + str(d))
         time.sleep(s)
 
