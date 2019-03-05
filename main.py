@@ -125,9 +125,21 @@ def cbm():
 
 
 # Regex Generation
-ll = 0
-
 chqGH = 'https://raw.githubusercontent.com/Charcoal-SE/SmokeDetector/master/'
+
+city_list = [
+    "Agra", "Amritsar", "Bangalore", "Bhopal", "Chandigarh",
+    "Chennai", "Coimbatore", "Delhi", "Dubai", "Durgapur",
+    "Ghaziabad", "Hyderabad", "Jaipur", "Jalandhar", "Kolkata",
+    "Ludhiana", "Mumbai", "Madurai", "Patna", "Portland",
+    "Rajkot", "Surat", "Telangana", "Udaipur", "Uttarakhand",
+    "Noida", "Pune", "Rohini", "Trivandrum", "Thiruvananthapuram",
+    "Nashik", "Gurgaon", "Kochi", "Ernakulam", "Nagpur",
+    # yes, these aren't cities but...
+    "India", "Pakistan",
+    # buyabans.com spammer uses creative variations
+    "Sri Lanka", "Srilanka", "Srilankan",
+]
 
 chqWatched = requests.get(chqGH + 'watched_keywords.txt').text
 chqWd = {}
@@ -149,7 +161,6 @@ wWR = r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(wWebsites) + '))'
 bKeywords = open('keywordBlacklist.txt').read().splitlines()
 bKR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(bKeywords))
 
-ll = 1
 cbmGenerator('Lists loaded')
 cbm()
 
@@ -159,7 +170,7 @@ def scanner(scan):
         result = 3
     elif regex.search(chqKR, scan):
         result = 4
-    elif regex.search(chqWR, scan):
+    elif regex.search(chqWR, scan, city_list):
         result = 5
 #    elif regex.search(wWR, scan):
 #        result = 1
@@ -221,19 +232,16 @@ cRT = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
 
 def runtime():
     while True:
-        if ll == 1:
-            s = datetime.now()
-            smokedetector('stackoverflow')
-            smokedetector('stackapps')
-            cbm()
-            s = datetime.now() - s
-            s = s.total_seconds()
-            d = sum(cRT[-10:]) / 10
-            s = 40 - s + d
-            print(str(s) + " | " + str(d))
-            time.sleep(s)
-        else:
-            time.sleep(5)
+        s = datetime.now()
+        smokedetector('stackoverflow')
+        smokedetector('stackapps')
+        cbm()
+        s = datetime.now() - s
+        s = s.total_seconds()
+        d = sum(cRT[-10:]) / 10
+        s = 40 - s + d
+        print(str(s) + " | " + str(d))
+        time.sleep(s)
 
 
 # Run Scanner
