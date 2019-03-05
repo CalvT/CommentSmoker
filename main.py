@@ -234,7 +234,6 @@ def runtime():
     while True:
         s = datetime.now()
         smokedetector('stackoverflow')
-        smokedetector('stackapps')
         cbm()
         s = datetime.now() - s
         s = s.total_seconds()
