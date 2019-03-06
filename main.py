@@ -14,6 +14,7 @@ password = cbenv.password
 site = 'stackexchange.com'
 botHeader = '[ [CommentSmoker](https://github.com/CalvT/CommentSmoker) ] '
 rooms = [57773]
+stopscan = 0
 
 
 # Bot Commands
@@ -103,6 +104,8 @@ class CommandHalt(bp.Command):
 
     def run(self):
         self.reply('Halting scanning')
+        global stopscan
+        stopscan = 1
 
 
 commands = [CommandAlive,
@@ -245,7 +248,11 @@ cRT = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
 
 
 def runtime(site):
+    global stopscan
+    stopscan = 0
     while True:
+        cbmGenerator('Comment scanning starting on ' + site)
+        cbm()
         s = datetime.now()
         smokedetector(site)
         cbm()
@@ -256,6 +263,9 @@ def runtime(site):
         if s < 0:
             s = 5
         print(str(s) + " | " + str(d))
+        if stopscan == 1:
+            cbmGenerator('Scanning halted on ' + site)
+            cbm()
         time.sleep(s)
 
 
