@@ -246,7 +246,7 @@ def smokedetector(site):
             cIDs.add(data['comment_id'])
             if x > 0:
                 cbmGenerator(messages.get(x)
-                             .format(site, data['link'], data['body'][:300]))
+                             .format(site, data['link'], data['body'][:250]))
                 b += 1
         else:
             c += 1
