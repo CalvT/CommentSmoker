@@ -250,9 +250,9 @@ cRT = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
 def runtime(site):
     global stopscan
     stopscan = 0
+    cbmGenerator('Comment scanning starting on ' + site)
+    cbm()
     while True:
-        cbmGenerator('Comment scanning starting on ' + site)
-        cbm()
         s = datetime.now()
         smokedetector(site)
         cbm()
