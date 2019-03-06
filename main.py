@@ -106,8 +106,8 @@ class CommandHalt(bp.Command):
         self.reply('Halting scanning')
         global stopscan
         stopscan = 1
-        
-        
+
+
 class CommandScan(bp.Command):
     @staticmethod
     def usage():
