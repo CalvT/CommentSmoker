@@ -106,6 +106,18 @@ class CommandHalt(bp.Command):
         self.reply('Halting scanning')
         global stopscan
         stopscan = 1
+        
+        
+class CommandScan(bp.Command):
+    @staticmethod
+    def usage():
+        return ['scan ...']
+
+    def privileges(self):
+        return 2
+
+    def run(self):
+        runtime(self.arguments)
 
 
 commands = [CommandAlive,
@@ -266,6 +278,7 @@ def runtime(site):
         if stopscan == 1:
             cbmGenerator('Scanning halted on ' + site)
             cbm()
+            break
         time.sleep(s)
 
 
