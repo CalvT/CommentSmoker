@@ -190,7 +190,7 @@ wWR = r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(wWebsites) + '))'
 bKeywords = open('keywordBlacklist.txt').read().splitlines()
 bKR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(bKeywords))
 
-twR = r'(?is)(?:^|\b|(?w:\b))(?:downvote)
+twR = r'(?is)(?:^|\b|(?w:\b))(?:downvote)'
 
 cbmGenerator('Lists loaded')
 cbm()
