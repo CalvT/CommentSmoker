@@ -190,6 +190,8 @@ wWR = r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(wWebsites) + '))'
 bKeywords = open('keywordBlacklist.txt').read().splitlines()
 bKR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(bKeywords))
 
+twR = r'(?is)(?:^|\b|(?w:\b))(?:downvote)
+
 cbmGenerator('Lists loaded')
 cbm()
 
@@ -204,6 +206,8 @@ def scanner(scan):
         result = 5
 #    elif regex.search(wWR, scan):
 #        result = 1
+    elif regex.search(twR, scan):
+        result = 6
     elif regex.search(bKR, scan):
         result = 2
     else:
@@ -214,9 +218,10 @@ def scanner(scan):
 messages = {
     1: 'Website Detected | [Comment: {}]({}): `{}`',
     2: 'Keyword Detected | [Comment: {}]({}): `{}`',
-    3: 'Charcoal Website Detected | [Comment: {}]({}): `{}` @CalvT',
-    4: 'Charcoal Keyword Detected | [Comment: {}]({}): `{}` @CalvT',
-    5: 'Charcoal Watched Keyword Detected | [Comment: {}]({}): `{}` @CalvT'
+    3: 'Charcoal Website Detected @CalvT | [Comment: {}]({}): `{}`',
+    4: 'Charcoal Keyword Detected @CalvT | [Comment: {}]({}): `{}`',
+    5: 'Charcoal Watched Keyword Detected @CalvT | [Comment: {}]({}): `{}`',
+    6: 'Trigger Word Detected | [Comment: {}]({}): `{}`'
 }
 
 
