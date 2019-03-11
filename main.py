@@ -179,18 +179,18 @@ chqWR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqWd.keys()))
 
 chqDomains = requests.get(chqGH +
                           'blacklisted_websites.txt').text.splitlines()
-chqDR = r'(?i)({})'.format('|'.join(chqDomains))
+chqDR = regex.compile(r'(?i)({})'.format('|'.join(chqDomains)))
 
 chqKeywords = requests.get(chqGH + 'bad_keywords.txt').text.splitlines()
-chqKR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqKeywords))
+chqKR = regex.compile(r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqKeywords)))
 
 wWebsites = open('websiteWhitelist.txt').read().splitlines()
-wWR = r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(wWebsites) + '))'
+wWR = regex.compile(r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(wWebsites) + '))')
 
 bKeywords = open('keywordBlacklist.txt').read().splitlines()
-bKR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(bKeywords))
+bKR = regex.compile(r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(bKeywords)))
 
-twR = r'(?is)(?:^|\b|(?w:\b))(?:downvote)'
+twR = regex.compile(r'(?is)(?:^|\b|(?w:\b))(?:downvote)')
 
 cbmGenerator('Lists loaded')
 cbm()
@@ -198,17 +198,17 @@ cbm()
 
 # Comment Scanner
 def scanner(scan):
-    if regex.search(chqDR, scan):
+    if chqDR.search(scan):
         result = 3
-    elif regex.search(chqKR, scan):
+    elif chqKR.search(scan):
         result = 4
-    elif regex.search(chqWR, scan, city=city_list):
+    elif chqWR.search(scan, city=city_list):
         result = 5
-#    elif regex.search(wWR, scan):
+#    elif wWR.search(scan):
 #        result = 1
-    elif regex.search(twR, scan):
+    elif twR.search(scan):
         result = 6
-    elif regex.search(bKR, scan):
+    elif bKR.search(scan):
         result = 2
     else:
         result = 0
