@@ -176,7 +176,7 @@ for line in chqWatched.splitlines():
     when, who, what = line.split('\t', 3)
     chqWd[what] = "when: {0} who: {1}".format(when, who)
 chqWR = regex.compile(r'(?is)(?:^|\b|(?w:\b))(?:{})'
-                      .format('|'.join(chqWd.keys())))
+                      .format('|'.join(chqWd.keys())), city=city_list)
 
 chqDomains = requests.get(chqGH +
                           'blacklisted_websites.txt').text.splitlines()
@@ -205,7 +205,7 @@ def scanner(scan):
         result = 3
     elif chqKR.search(scan):
         result = 4
-    elif chqWR.search(scan, city=city_list):
+    elif chqWR.search(scan):
         result = 5
 #    elif wWR.search(scan):
 #        result = 1
