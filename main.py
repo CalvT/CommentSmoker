@@ -175,17 +175,20 @@ chqWd = {}
 for line in chqWatched.splitlines():
     when, who, what = line.split('\t', 3)
     chqWd[what] = "when: {0} who: {1}".format(when, who)
-chqWR = regex.compile(r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqWd.keys())))
+chqWR = regex.compile(r'(?is)(?:^|\b|(?w:\b))(?:{})'
+                      .format('|'.join(chqWd.keys())))
 
 chqDomains = requests.get(chqGH +
                           'blacklisted_websites.txt').text.splitlines()
 chqDR = regex.compile(r'(?i)({})'.format('|'.join(chqDomains)))
 
 chqKeywords = requests.get(chqGH + 'bad_keywords.txt').text.splitlines()
-chqKR = regex.compile(r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqKeywords)))
+chqKR = regex.compile(r'(?is)(?:^|\b|(?w:\b))(?:{})'
+                      .format('|'.join(chqKeywords)))
 
 wWebsites = open('websiteWhitelist.txt').read().splitlines()
-wWR = regex.compile(r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'.join(wWebsites) + '))')
+wWR = regex.compile(r'.*<a href=\"http(s):\/\/(?!(www\.|)(' + '|'
+                    .join(wWebsites) + '))')
 
 bKeywords = open('keywordBlacklist.txt').read().splitlines()
 bKR = regex.compile(r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(bKeywords)))
@@ -206,8 +209,8 @@ def scanner(scan):
         result = 5
 #    elif wWR.search(scan):
 #        result = 1
-    elif twR.search(scan):
-        result = 6
+#    elif twR.search(scan):
+#        result = 6
     elif bKR.search(scan):
         result = 2
     else:
