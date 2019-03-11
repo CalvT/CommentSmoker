@@ -175,7 +175,7 @@ chqWd = {}
 for line in chqWatched.splitlines():
     when, who, what = line.split('\t', 3)
     chqWd[what] = "when: {0} who: {1}".format(when, who)
-chqWR = r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqWd.keys()))
+chqWR = regex.compile(r'(?is)(?:^|\b|(?w:\b))(?:{})'.format('|'.join(chqWd.keys())))
 
 chqDomains = requests.get(chqGH +
                           'blacklisted_websites.txt').text.splitlines()
