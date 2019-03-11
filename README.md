@@ -11,9 +11,6 @@ CommentSmoker is currently running on an Raspberry Pi 3B, on Python 3.5
 This is a project for me to learn Python, so the coding quality is sub-par at best. Use at your own risk! Any improvements welcome.
 
 ### TODO
- - Add blacklist capabilities
- - Add whitelist capabilities
- - Add commands & privileges
- - Add message queue
- - Add Charcoal lists
- - Expand to other sites
+ - Add start on any site
+ - Enable/Disable reasons on the fly
+ - Multiprocessing
