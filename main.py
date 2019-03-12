@@ -221,9 +221,9 @@ def scanner(scan):
 messages = {
     1: 'Website Detected | [Comment: {}]({}): `{}`',
     2: 'Keyword Detected | [Comment: {}]({}): `{}`',
-    3: 'Charcoal Website Detected @CalvT | [Comment: {}]({}): `{}`',
-    4: 'Charcoal Keyword Detected @CalvT | [Comment: {}]({}): `{}`',
-    5: 'Charcoal Watched Keyword Detected @CalvT | [Comment: {}]({}): `{}`',
+    3: 'Charcoal Website Detected | [Comment: {}]({}): `{}`',
+    4: 'Charcoal Keyword Detected | [Comment: {}]({}): `{}`',
+    5: 'Charcoal Watched Keyword Detected | [Comment: {}]({}): `{}`',
     6: 'Trigger Word Detected | [Comment: {}]({}): `{}`'
 }
 
