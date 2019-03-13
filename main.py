@@ -117,8 +117,8 @@ class CommandScan(bp.Command):
         return 2
 
     def run(self):
-        print('Scanning command received for ' + self.arguments)
-        runtime(self.arguments)
+        print('Scanning command received for ' + self.arguments[0])
+        runtime(self.arguments[0])
 
 
 commands = [CommandAlive,
