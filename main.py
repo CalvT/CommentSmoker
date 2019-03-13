@@ -91,7 +91,7 @@ class CommandPull(bp.Command):
 
     def run(self):
         output = subprocess.check_output(['git', 'pull'])
-        self.reply(output)
+        self.reply(output.decode('UTF-8'))
 
 
 class CommandHalt(bp.Command):
