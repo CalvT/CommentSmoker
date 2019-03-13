@@ -92,6 +92,7 @@ class CommandPull(bp.Command):
     def run(self):
         output = subprocess.check_output(['git', 'pull'])
         self.reply(output.decode('UTF-8'))
+        Utilities.StopReason.reboot = True
 
 
 class CommandHalt(bp.Command):
