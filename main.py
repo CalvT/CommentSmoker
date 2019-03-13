@@ -127,7 +127,8 @@ commands = [CommandAlive,
             CommandListPrivilegedUsers,
             CommandReboot,
             CommandPull,
-            CommandHalt]
+            CommandHalt,
+            CommandScan]
 
 
 # Bot Starup
