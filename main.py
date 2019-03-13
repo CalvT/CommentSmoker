@@ -21,27 +21,27 @@ stopscan = 0
 class CommandAlive(bp.Command):
     @staticmethod
     def usage():
-        return ["alive", "status"]
+        return ['alive', 'status']
 
     def run(self):
-        self.reply("Yes")
+        self.reply('Yes')
 
 
 class CommandAmiprivileged(bp.Command):
     def usage():
-        return ["amiprivileged", "doihaveprivs", "privileges"]
+        return ['amiprivileged', 'privs', 'privileges']
 
     def run(self):
         user_privs = self.message.user.get_privilege_type()
         if user_privs is None:
-            self.reply("You do not have any privileges.")
+            self.reply('You do not have any privileges.')
         else:
-            self.reply("You have the privilege: " + user_privs.name)
+            self.reply('You have the privilege: ' + user_privs.name)
 
 
 class CommandListPrivilegedUsers(bp.Command):
     def usage():
-        return ["membership", "privileged", "listprivileged"]
+        return ['membership', 'privileged', 'listprivileged']
 
     def run(self):
         privilege_list = list()
@@ -52,10 +52,10 @@ class CommandListPrivilegedUsers(bp.Command):
                                       each_user.get_privilege_type().name])
 
         table = tabulate.tabulate(privilege_list,
-                                  headers=["User ID", "Privilege level"],
-                                  tablefmt="orgtbl")
+                                  headers=['User ID', 'Privilege level'],
+                                  tablefmt='orgtbl')
 
-        self.post("    " + table.replace("\n", "\n    "))
+        self.post("    " + table.replace('\n', '\n    '))
 
 
 class CommandReboot(bp.Command):
@@ -67,7 +67,7 @@ class CommandReboot(bp.Command):
         return 2
 
     def run(self):
-        self.reply("Rebooting...")
+        self.reply('Rebooting, see you in a while.')
         bp.Utilities.StopReason.reboot = True
 
 
@@ -77,7 +77,7 @@ class CommandStop(bp.Command):
         return ['stop', 'shutdown']
 
     def run(self):
-        self.reply("Shutting down...")
+        self.reply('Goodbye, may we meet again.')
         bp.Utilities.StopReason.shutdown = True
 
 
@@ -90,7 +90,7 @@ class CommandPull(bp.Command):
         return 2
 
     def run(self):
-        output = subprocess.check_output(["git", "pull"])
+        output = subprocess.check_output(['git', 'pull'])
         self.reply(output)
 
 
@@ -111,7 +111,7 @@ class CommandHalt(bp.Command):
 class CommandScan(bp.Command):
     @staticmethod
     def usage():
-        return ['scan ...']
+        return ['scan *']
 
     def privileges(self):
         return 2
