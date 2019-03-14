@@ -1,4 +1,5 @@
 from datetime import datetime
+from multiprocessing import Pool
 import BotpySE as bp
 import cbenv
 import regex
@@ -258,8 +259,9 @@ def composer(data):
 def smokedetector(site):
     items = fetcher(site)
     a = b = c = 0
+    p = Pool(3)
     for data in items:
-        composer(data)
+        p.map(composer, data)
     # print(
     #    '{} Site: {} | Scanned: {} | New Matched: {} | Previously seen: {}'
     #    .format(datetime.now(), site, a, b, c))
