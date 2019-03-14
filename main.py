@@ -234,7 +234,7 @@ def fetcher(site):
     comments = requests.get(
         'http://api.stackexchange.com/2.2/comments?'
         'page=1'
-        '&pagesize=75'
+        '&pagesize=40'
         '&key=IAkbitmze4B8KpacUfLqkw(('
         '&order=desc'
         '&sort=creation'
@@ -266,7 +266,7 @@ def smokedetector(site):
 
 
 cIDs = set()
-cRT = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+cRT = [15, 15, 15, 15, 15, 15, 15, 15, 15, 15]
 
 
 def runtime(site):
@@ -281,7 +281,7 @@ def runtime(site):
         s = datetime.now() - s
         s = s.total_seconds()
         d = sum(cRT[-10:]) / 10
-        s = 40 - s + d
+        s = 20 - s + d
         if s < 0:
             s = 5
         print(str(s) + " | " + str(d))
