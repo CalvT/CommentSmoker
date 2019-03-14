@@ -200,6 +200,21 @@ cbmGenerator('Lists loaded')
 cbm()
 
 
+# Get Comments
+def fetcher(site):
+    comments = requests.get(
+        'http://api.stackexchange.com/2.2/comments?'
+        'page=1'
+        '&pagesize=40'
+        '&key=IAkbitmze4B8KpacUfLqkw(('
+        '&order=desc'
+        '&sort=creation'
+        '&site=' + site +
+        '&filter=!SWK9z*gpvuT.wQS8A.'
+    ).json()
+    return comments['items']
+
+
 # Comment Scanner
 def scanner(scan):
     if chqDR.search(scan):
@@ -229,19 +244,14 @@ messages = {
 }
 
 
-# Get Comments
-def fetcher(site):
-    comments = requests.get(
-        'http://api.stackexchange.com/2.2/comments?'
-        'page=1'
-        '&pagesize=40'
-        '&key=IAkbitmze4B8KpacUfLqkw(('
-        '&order=desc'
-        '&sort=creation'
-        '&site=' + site +
-        '&filter=!SWK9z*gpvuT.wQS8A.'
-    ).json()
-    return comments['items']
+# Composer
+def composer(data):
+    if data['comment_id'] not in cIDs:
+        x = scanner(data['body'])
+        cIDs.add(data['comment_id'])
+        if x > 0:
+            cbmGenerator(messages.get(x)
+                         .format(site, data['link'], data['body'][:250]))
 
 
 # Connect All Functions
@@ -249,20 +259,10 @@ def smokedetector(site):
     items = fetcher(site)
     a = b = c = 0
     for data in items:
-        a += 1
-        if data['comment_id'] not in cIDs:
-            x = scanner(data['body'])
-            cIDs.add(data['comment_id'])
-            if x > 0:
-                cbmGenerator(messages.get(x)
-                             .format(site, data['link'], data['body'][:250]))
-                b += 1
-        else:
-            c += 1
-    cRT.append(c)
-    print(
-        '{} Site: {} | Scanned: {} | New Matched: {} | Previously seen: {}'
-        .format(datetime.now(), site, a, b, c))
+        composer(data)
+    # print(
+    #    '{} Site: {} | Scanned: {} | New Matched: {} | Previously seen: {}'
+    #    .format(datetime.now(), site, a, b, c))
 
 
 cIDs = set()
