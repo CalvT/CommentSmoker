@@ -247,23 +247,26 @@ messages = {
 
 # Composer
 def composer(data):
+    global a
+    global b
+    global c
+    a += 1
     if data['comment_id'] not in cIDs:
         x = scanner(data['body'])
         cIDs.add(data['comment_id'])
         if x > 0:
             cbmGenerator(messages.get(x)
                          .format(site, data['link'], data['body'][:250]))
+            b += 1
+        else:
+            c += 1
 
 
 # Connect All Functions
 def smokedetector(site):
     items = fetcher(site)
-    a = b = c = 0
     p = Pool(3)
     p.map(composer, items)
-    # print(
-    #    '{} Site: {} | Scanned: {} | New Matched: {} | Previously seen: {}'
-    #    .format(datetime.now(), site, a, b, c))
 
 
 cIDs = set()
@@ -272,13 +275,20 @@ cRT = [15, 15, 15, 15, 15, 15, 15, 15, 15, 15]
 
 def runtime(site):
     global stopscan
+    global a
+    global b
+    global c
     stopscan = 0
     cbmGenerator('Comment scanning starting on ' + site)
     cbm()
     while True:
         s = datetime.now()
+        a = b = c = 0
         smokedetector(site)
         cbm()
+        print('{} {} | S: {} | N: {} | O: {}'
+              .format(datetime.now(), site, a, b, c))
+        cRT.append(c)
         s = datetime.now() - s
         s = s.total_seconds()
         d = sum(cRT[-10:]) / 10
