@@ -260,8 +260,7 @@ def smokedetector(site):
     items = fetcher(site)
     a = b = c = 0
     p = Pool(3)
-    for data in items:
-        p.map(composer, data)
+    p.map(composer, items)
     # print(
     #    '{} Site: {} | Scanned: {} | New Matched: {} | Previously seen: {}'
     #    .format(datetime.now(), site, a, b, c))
