@@ -1,7 +1,7 @@
 from datetime import datetime
-from multiprocessing import Pool
 import BotpySE as bp
 import cbenv
+import multiprocessing
 import regex
 import requests
 import subprocess
@@ -16,6 +16,13 @@ site = 'stackexchange.com'
 botHeader = '[ [CommentSmoker](https://github.com/CalvT/CommentSmoker) ] '
 rooms = [57773]
 stopscan = 0
+cIDs = set()
+cRT = [15, 15, 15, 15, 15, 15, 15, 15, 15, 15]
+manager = multiprocessing.Manager()
+a = manager.dict()
+b = manager.dict()
+c = manager.dict()
+cbmQueue = manager.dict()
 
 
 # Bot Commands
@@ -140,9 +147,6 @@ bot.add_privilege_type(2, "owner")
 
 
 # Bot Message System
-cbmQueue = {}
-
-
 def cbmGenerator(msg):
     cbmQueue[datetime.now()] = (botHeader + msg)[:499]
 
@@ -247,46 +251,35 @@ messages = {
 
 # Composer
 def composer(data):
-    global a
-    global b
-    global c
-    a.append(data['comment_id'])
+    a[data['comment_id']] = data['comment_id']
     if data['comment_id'] not in cIDs:
         x = scanner(data['body'])
         cIDs.add(data['comment_id'])
         if x > 0:
             cbmGenerator(messages.get(x)
                          .format(site, data['link'], data['body'][:250]))
-            b.append(data['comment_id'])
+            b[data['comment_id']] = data['comment_id']
         else:
-            c.append(data['comment_id'])
+            c[data['comment_id']] = data['comment_id']
 
 
 # Connect All Functions
 def smokedetector(site):
     items = fetcher(site)
-    p = Pool(3)
+    p = multiprocessing.Pool(3)
     p.map(composer, items)
-
-
-cIDs = set()
-cRT = [15, 15, 15, 15, 15, 15, 15, 15, 15, 15]
-a = []
-b = []
-c = []
 
 
 def runtime(site):
     global stopscan
-    del a[:]
-    del b[:]
-    del c[:]
     stopscan = 0
     cbmGenerator('Comment scanning starting on ' + site)
     cbm()
     while True:
         s = datetime.now()
-        a = b = c = 0
+        a.clear()
+        b.clear()
+        c.clear()
         smokedetector(site)
         cbm()
         print('{} {} | S: {} | N: {} | O: {}'
